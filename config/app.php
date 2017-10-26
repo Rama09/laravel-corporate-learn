@@ -179,6 +179,8 @@ return [
 
         // Laravel IDE helper
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        // Laravel-menu
+        Lavary\Menu\ServiceProvider::class,
     ],
 
     /*
@@ -227,6 +229,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'LaravelMenu' => Lavary\Menu\Facade::class,
 
     ],
 
