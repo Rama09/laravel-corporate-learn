@@ -1,0 +1,34 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class ChangePortfolioTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('portfolio', function (Blueprint $table) {
+            $table->string('filter_alias');
+            $table->foreign('filter_alias')->references('alias')->on('portfolio_filters');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('portfolio', function (Blueprint $table) {
+            $table->dropForeign('portfolio_filter_alias_foreign');
+            $table->dropColumn('filter_alias');
+        });
+    }
+}
