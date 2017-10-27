@@ -28,7 +28,7 @@ class SiteController extends Controller
     {
         $menu = $this->getMenu();
 
-        $navigation = view(env('THEME').'.navigation')->with('menu', $menu)->render();
+        $navigation = view(env('THEME').'.navigation')->with('menu', $menu);
         $this->vars = array_add($this->vars, 'navigation', $navigation);
 
         return view($this->template)->with($this->vars);
