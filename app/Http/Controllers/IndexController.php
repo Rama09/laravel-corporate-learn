@@ -3,6 +3,7 @@
 namespace Corp\Http\Controllers;
 
 use Corp\Menu;
+use Corp\Repositories\ArticlesRepository;
 use Corp\Repositories\MenuRepository;
 use Corp\Repositories\PortfolioRepository;
 use Corp\Repositories\SliderRepository;
@@ -10,12 +11,13 @@ use Illuminate\Http\Request;
 
 class IndexController extends SiteController
 {
-    public function __construct(SliderRepository $s_rep, PortfolioRepository $p_rep)
+    public function __construct(SliderRepository $s_rep, PortfolioRepository $p_rep, ArticlesRepository $a_rep)
     {
         parent::__construct(new MenuRepository(new Menu()));
 
         $this->s_rep = $s_rep;
         $this->p_rep = $p_rep;
+        $this->a_rep = $a_rep;
 
         $this->bar = 'right';
         $this->template = env('THEME').'.index';
@@ -28,6 +30,10 @@ class IndexController extends SiteController
      */
     public function index()
     {
+        $this->keywords = 'Home page';
+        $this->meta_description = 'Home page';
+        $this->title = 'Home page';
+
         $slider_items = $this->getSlider();
         $slider = view(env('THEME').'.slider')->with('slider', $slider_items);
         $this->vars = array_add($this->vars, 'slider', $slider);
@@ -36,7 +42,16 @@ class IndexController extends SiteController
         $content = view(env('THEME').'.content')->with('portfolio', $portfolio);
         $this->vars = array_add($this->vars, 'content', $content);
 
+        $articles = $this->getArticles();
+        $this->contentRightBar = view(env('THEME').'.indexBar')->with('articles', $articles);
+
         return $this->renderOutput();
+    }
+
+    private function getArticles() {
+        $articles = $this->a_rep->get(['title', 'created_at', 'img', 'alias'], \Config::get('settings.home_articles_count'));
+
+        return $articles;
     }
 
     private function getSlider()

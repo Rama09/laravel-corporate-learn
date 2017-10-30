@@ -13,9 +13,13 @@ class SiteController extends Controller
     protected $a_rep;                       // articles repository
     protected $m_rep;                       // menu repository
 
+    protected $keywords;
+    protected $meta_description;
+    protected $title;
+
     protected $template;                    // шаблон
     protected $vars;                        // переменные передаваемые в шаблон
-    protected $bar = false;                 // флаг наличия sidebar
+    protected $bar = 'no';                 // флаг наличия sidebar
     protected $contentRightBar = false;     // хранит инф-ю для правого sidebar
     protected $contentLeftBar = false;      // хранит инф-ю для левого sidebar
 
@@ -30,6 +34,20 @@ class SiteController extends Controller
 
         $navigation = view(env('THEME').'.navigation')->with('menu', $menu);
         $this->vars = array_add($this->vars, 'navigation', $navigation);
+
+        if($this->contentRightBar) {
+            $rightBar = view(env('THEME').'.rightBar')->with('content_rightBar', $this->contentRightBar);
+            $this->vars = array_add($this->vars, 'rightBar', $rightBar);
+        }
+
+        $this->vars = array_add($this->vars, 'bar', $this->bar);
+
+        $footer = view(env('THEME').'.footer');
+        $this->vars = array_add($this->vars, 'footer', $footer);
+
+        $this->vars = array_add($this->vars, 'keywords', $this->keywords);
+        $this->vars = array_add($this->vars, 'meta_description', $this->meta_description);
+        $this->vars = array_add($this->vars, 'title', $this->title);
 
         return view($this->template)->with($this->vars);
     }
