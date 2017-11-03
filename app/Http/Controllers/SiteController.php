@@ -12,6 +12,7 @@ class SiteController extends Controller
     protected $s_rep;                       // slider repository
     protected $a_rep;                       // articles repository
     protected $m_rep;                       // menu repository
+    protected $c_rep;                       // comments repository
 
     protected $keywords;
     protected $meta_description;
